@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/CartContext';
+import { CUSTOMIZATION_FEE } from '@/data/products';
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, totalPrice } = useCart();
@@ -15,6 +16,10 @@ const Cart = () => {
       maximumFractionDigits: 0,
     }).format(price);
   };
+
+  // Total including customization fees
+  const customizationTotal = items.reduce((sum, item) => sum + CUSTOMIZATION_FEE * item.quantity, 0);
+  const grandTotal = totalPrice + customizationTotal;
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,11 +38,11 @@ const Cart = () => {
                 Your cart is empty
               </h2>
               <p className="text-muted-foreground mb-8">
-                Looks like you haven't added anything to your cart yet.
+                Looks like you haven't started customizing yet.
               </p>
               <Link to="/products">
                 <Button variant="hero">
-                  Start Shopping
+                  Start Customizing
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -74,8 +79,11 @@ const Cart = () => {
                       <p className="text-sm text-muted-foreground">
                         Size: UK {item.size}
                       </p>
-                      <p className="text-lg font-display font-bold text-primary mt-1">
-                        {formatPrice(item.product.price)}
+                      <p className="text-xs text-primary font-semibold mt-1">
+                        ✨ Custom Hand-Painted Service Included
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-0.5">
+                        Shoe {formatPrice(item.product.price)} + Painting {formatPrice(CUSTOMIZATION_FEE)}
                       </p>
 
                       {/* Quantity Controls */}
@@ -110,7 +118,7 @@ const Cart = () => {
                     {/* Item Total */}
                     <div className="text-right hidden md:block">
                       <p className="font-display font-bold text-lg">
-                        {formatPrice(item.product.price * item.quantity)}
+                        {formatPrice((item.product.price + CUSTOMIZATION_FEE) * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -126,8 +134,12 @@ const Cart = () => {
 
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="text-muted-foreground">Shoes Subtotal</span>
                       <span className="font-semibold">{formatPrice(totalPrice)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Hand-Painting Fee</span>
+                      <span className="font-semibold">{formatPrice(customizationTotal)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping</span>
@@ -137,7 +149,7 @@ const Cart = () => {
                       <div className="flex justify-between">
                         <span className="font-display font-bold text-lg">Total</span>
                         <span className="font-display font-bold text-lg text-primary">
-                          {formatPrice(totalPrice)}
+                          {formatPrice(grandTotal)}
                         </span>
                       </div>
                     </div>

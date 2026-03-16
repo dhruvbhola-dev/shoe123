@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Paintbrush } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
@@ -15,31 +15,32 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left animate-fade-in">
-            <p className="text-primary font-display uppercase tracking-[0.3em] text-sm mb-4">
-              New Collection 2024
+            <p className="text-primary font-display uppercase tracking-[0.3em] text-sm mb-4 flex items-center gap-2 justify-center lg:justify-start">
+              <Paintbrush className="h-4 w-4" />
+              Custom Hand-Painted Shoes
             </p>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.9] mb-6">
-              Step Into
-              <span className="block text-gradient">Style</span>
+              Where Art
+              <span className="block text-gradient">Becomes Wearable</span>
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-md mx-auto lg:mx-0 mb-8">
-              Discover premium footwear crafted for those who dare to stand out. 
-              Comfort meets cutting-edge design.
+              Upload your design. We hand-paint it on premium white shoes. 
+              One-of-a-kind wearable art, crafted just for you.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link to="/products">
                 <Button variant="hero" size="xl">
-                  Shop Now
+                  Start Customizing
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               
               <Link to="/products?category=sneakers">
                 <Button variant="outline" size="xl">
-                  Explore Sneakers
+                  Browse Canvas Shoes
                 </Button>
               </Link>
             </div>
@@ -47,12 +48,12 @@ const Hero = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-border">
               <div>
-                <p className="text-3xl md:text-4xl font-display font-bold text-gradient">50+</p>
-                <p className="text-sm text-muted-foreground mt-1">Premium Styles</p>
+                <p className="text-3xl md:text-4xl font-display font-bold text-gradient">500+</p>
+                <p className="text-sm text-muted-foreground mt-1">Designs Painted</p>
               </div>
               <div>
                 <p className="text-3xl md:text-4xl font-display font-bold text-gradient">10K+</p>
-                <p className="text-sm text-muted-foreground mt-1">Happy Customers</p>
+                <p className="text-sm text-muted-foreground mt-1">Happy Artists</p>
               </div>
               <div>
                 <p className="text-3xl md:text-4xl font-display font-bold text-gradient">4.9</p>
@@ -65,8 +66,8 @@ const Hero = () => {
           <div className="relative animate-slide-up">
             <div className="relative z-10 animate-float">
               <img
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80"
-                alt="Featured Shoe"
+                src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=800&q=80"
+                alt="Plain white canvas shoe ready for custom art"
                 className="w-full max-w-lg mx-auto drop-shadow-2xl"
                 style={{ 
                   filter: 'drop-shadow(0 40px 80px rgba(255, 107, 0, 0.3))',
