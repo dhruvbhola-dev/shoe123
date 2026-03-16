@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { products as initialProducts, Product } from '@/data/products';
+import { products as initialProducts, Product, CUSTOMIZATION_FEE } from '@/data/products';
 import { toast } from 'sonner';
 
 const Admin = () => {
@@ -21,9 +21,9 @@ const Admin = () => {
 
   // Mock orders data
   const orders = [
-    { id: 'ORD001', customer: 'John Doe', total: 12999, status: 'Delivered', date: '2024-01-15' },
-    { id: 'ORD002', customer: 'Jane Smith', total: 9999, status: 'Processing', date: '2024-01-14' },
-    { id: 'ORD003', customer: 'Mike Johnson', total: 22998, status: 'Shipped', date: '2024-01-13' },
+    { id: 'INK001', customer: 'John Doe', total: 4999 + CUSTOMIZATION_FEE, status: 'Painting', date: '2024-01-15' },
+    { id: 'INK002', customer: 'Jane Smith', total: 5999 + CUSTOMIZATION_FEE, status: 'Delivered', date: '2024-01-14' },
+    { id: 'INK003', customer: 'Mike Johnson', total: (3999 + CUSTOMIZATION_FEE) * 2, status: 'Shipped', date: '2024-01-13' },
   ];
 
   const formatPrice = (price: number) => {
@@ -43,13 +43,13 @@ const Admin = () => {
     const product: Product = {
       id: String(Date.now()),
       name: newProduct.name,
-      brand: 'UrbanKicks',
+      brand: 'Inkwear',
       price: Number(newProduct.price),
       category: newProduct.category as Product['category'],
       image: newProduct.image,
       images: [newProduct.image],
       sizes: [6, 7, 8, 9, 10],
-      description: `Premium ${newProduct.category} from UrbanKicks.`,
+      description: `Plain white ${newProduct.category} shoe ready for custom hand-painting.`,
       featured: false,
       rating: 4.5,
       reviews: 0,
@@ -99,37 +99,37 @@ const Admin = () => {
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-display font-bold">
-                  Manage Products ({productList.length})
+                  Manage Shoes ({productList.length})
                 </h2>
                 <Button onClick={() => setShowAddForm(!showAddForm)}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Product
+                  Add Shoe
                 </Button>
               </div>
 
               {/* Add Product Form */}
               {showAddForm && (
                 <div className="bg-card rounded-xl border border-border p-6 mb-6">
-                  <h3 className="font-display font-bold mb-4">Add New Product</h3>
+                  <h3 className="font-display font-bold mb-4">Add New White Shoe</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="name">Product Name</Label>
+                      <Label htmlFor="name">Shoe Name</Label>
                       <Input
                         id="name"
                         value={newProduct.name}
                         onChange={e => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
-                        placeholder="Air Max Pro"
+                        placeholder="Canvas High-Top"
                         className="mt-1"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="price">Price (₹)</Label>
+                      <Label htmlFor="price">Base Price (₹)</Label>
                       <Input
                         id="price"
                         type="number"
                         value={newProduct.price}
                         onChange={e => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
-                        placeholder="9999"
+                        placeholder="4999"
                         className="mt-1"
                       />
                     </div>
@@ -158,8 +158,11 @@ const Admin = () => {
                       />
                     </div>
                   </div>
+                  <p className="text-xs text-muted-foreground mt-3">
+                    Customization fee of {formatPrice(CUSTOMIZATION_FEE)} will be added automatically at checkout.
+                  </p>
                   <div className="flex gap-3 mt-4">
-                    <Button onClick={handleAddProduct}>Add Product</Button>
+                    <Button onClick={handleAddProduct}>Add Shoe</Button>
                     <Button variant="outline" onClick={() => setShowAddForm(false)}>
                       Cancel
                     </Button>
@@ -173,9 +176,10 @@ const Admin = () => {
                   <table className="w-full">
                     <thead className="bg-secondary">
                       <tr>
-                        <th className="text-left p-4 font-display font-semibold">Product</th>
+                        <th className="text-left p-4 font-display font-semibold">Shoe</th>
                         <th className="text-left p-4 font-display font-semibold">Category</th>
-                        <th className="text-left p-4 font-display font-semibold">Price</th>
+                        <th className="text-left p-4 font-display font-semibold">Base Price</th>
+                        <th className="text-left p-4 font-display font-semibold">Total w/ Paint</th>
                         <th className="text-left p-4 font-display font-semibold">Actions</th>
                       </tr>
                     </thead>
@@ -197,6 +201,9 @@ const Admin = () => {
                           </td>
                           <td className="p-4 font-semibold">
                             {formatPrice(product.price)}
+                          </td>
+                          <td className="p-4 font-semibold text-primary">
+                            {formatPrice(product.price + CUSTOMIZATION_FEE)}
                           </td>
                           <td className="p-4">
                             <Button

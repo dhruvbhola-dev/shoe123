@@ -20,9 +20,12 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex flex-col items-start">
             <span className="text-2xl md:text-3xl font-display font-bold text-gradient">
-              UrbanKicks
+              Inkwear
+            </span>
+            <span className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase -mt-1 hidden md:block">
+              Where art becomes wearable
             </span>
           </Link>
 

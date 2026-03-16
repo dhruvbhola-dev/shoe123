@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/context/CartContext';
+import { CUSTOMIZATION_FEE } from '@/data/products';
 import { toast } from 'sonner';
 
 const Checkout = () => {
@@ -31,6 +32,9 @@ const Checkout = () => {
     }).format(price);
   };
 
+  const customizationTotal = items.reduce((sum, item) => sum + CUSTOMIZATION_FEE * item.quantity, 0);
+  const grandTotal = totalPrice + customizationTotal;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
       ...prev,
@@ -39,7 +43,6 @@ const Checkout = () => {
   };
 
   const handlePayment = async () => {
-    // Validate form
     if (!formData.name || !formData.email || !formData.phone || !formData.address) {
       toast.error('Please fill all required fields');
       return;
@@ -47,20 +50,12 @@ const Checkout = () => {
 
     setIsProcessing(true);
 
-    // Simulate payment processing
-    // In production, this would integrate with Razorpay backend
     setTimeout(() => {
-      toast.success('Order placed successfully!');
+      toast.success('Order placed successfully! Your custom shoes are being crafted.');
       clearCart();
       navigate('/');
       setIsProcessing(false);
     }, 2000);
-
-    // TODO: Razorpay integration
-    // 1. Call backend /create-order API
-    // 2. Open Razorpay checkout with order_id
-    // 3. Handle payment success/failure
-    // 4. Verify payment with /verify-payment API
   };
 
   if (items.length === 0) {
@@ -205,9 +200,12 @@ const Checkout = () => {
                         <p className="text-xs text-muted-foreground">
                           Size: UK {item.size} × {item.quantity}
                         </p>
+                        <p className="text-xs text-primary font-semibold">
+                          ✨ Custom Hand-Painted Service Included
+                        </p>
                       </div>
                       <p className="font-semibold text-sm">
-                        {formatPrice(item.product.price * item.quantity)}
+                        {formatPrice((item.product.price + CUSTOMIZATION_FEE) * item.quantity)}
                       </p>
                     </div>
                   ))}
@@ -215,8 +213,12 @@ const Checkout = () => {
 
                 <div className="border-t border-border pt-4 space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="text-muted-foreground">Shoes Subtotal</span>
                     <span>{formatPrice(totalPrice)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Hand-Painting Fee</span>
+                    <span>{formatPrice(customizationTotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Shipping</span>
@@ -225,7 +227,7 @@ const Checkout = () => {
                   <div className="flex justify-between pt-3 border-t border-border">
                     <span className="font-display font-bold text-lg">Total</span>
                     <span className="font-display font-bold text-lg text-primary">
-                      {formatPrice(totalPrice)}
+                      {formatPrice(grandTotal)}
                     </span>
                   </div>
                 </div>
@@ -238,7 +240,7 @@ const Checkout = () => {
                   disabled={isProcessing}
                 >
                   <CreditCard className="h-5 w-5 mr-2" />
-                  {isProcessing ? 'Processing...' : `Pay ${formatPrice(totalPrice)}`}
+                  {isProcessing ? 'Processing...' : `Pay ${formatPrice(grandTotal)}`}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center mt-4">
