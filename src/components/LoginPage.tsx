@@ -6,7 +6,7 @@ export const LoginPage = () => {
 
   const handleDemoLogin = () => {
     setLoading(true);
-    // Simulate a 2-second wait so it looks "real" to the team
+  
     setTimeout(() => {
       setLoading(false);
       alert("Success! In the real version, this will redirect to the home page.");
